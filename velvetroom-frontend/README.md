@@ -1,5 +1,8 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+Important: Feature overview and architecture (Spanish)
+- Consulta el informe detallado de funcionalidades, autenticación/autorización y estado: [INFORME_FUNCIONALIDADES.md](./INFORME_FUNCIONALIDADES.md)
+
 ## Getting Started
 
 First, run the development server:
