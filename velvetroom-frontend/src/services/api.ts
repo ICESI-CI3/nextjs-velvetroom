@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { softLogout } from '@/services/auth';
 
 const api = axios.create({
   baseURL: 'http://localhost:3000/api',
@@ -13,16 +14,31 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+let isRedirecting = false; // ✅ evita loops
+
 api.interceptors.response.use(
   (res) => res,
   (err) => {
     const status = err.response?.status;
-    if ([401, 403, 404].includes(status)) {
-      const type = status.toString();
-      if (typeof window !== 'undefined') {
-        window.location.href = `/unauthorized?type=${type}`;
+
+    if (status === 401) {
+      softLogout();
+
+      if (!isRedirecting && typeof window !== 'undefined') {
+        isRedirecting = true;
+        window.location.href = `/unauthorized?type=401`;
       }
+      return Promise.reject(err);
     }
+
+    if ([403, 404].includes(status)) {
+      if (!isRedirecting && typeof window !== 'undefined') {
+        isRedirecting = true;
+        window.location.href = `/unauthorized?type=${status}`;
+      }
+      return Promise.reject(err);
+    }
+
     return Promise.reject(err);
   }
 );

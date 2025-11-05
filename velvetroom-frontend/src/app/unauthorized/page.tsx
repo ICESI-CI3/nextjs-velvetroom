@@ -11,7 +11,7 @@ export default function ErrorPortal() {
     switch (type) {
       case '401':
         return {
-          title: '🔒 La puerta está cerrada...',
+          title: 'La puerta está cerrada...',
           text: 'No posees una llave válida para entrar a esta sala de la Velvet Room.',
           suggestion: (
             <>
@@ -23,7 +23,7 @@ export default function ErrorPortal() {
         };
       case '404':
         return {
-          title: '🌌 La sala se desvanece...',
+          title: 'La sala se desvanece...',
           text: 'El lugar que buscas no existe dentro de los dominios de la Velvet Room.',
           suggestion: (
             <p>
@@ -33,7 +33,7 @@ export default function ErrorPortal() {
         };
       default:
         return {
-          title: '🚫 Entrada prohibida',
+          title: 'Entrada prohibida',
           text: 'El guardián Igor te observa: no estás autorizado para entrar aquí.',
           suggestion: (
             <p>

@@ -39,7 +39,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
+    useEffect(() => {
+    const handleLogout = () => {
+        setUser(null);
+        setToken(null);
+    };
+
+    window.addEventListener("auth-logout", handleLogout);
+    return () => window.removeEventListener("auth-logout", handleLogout);
+    }, []);
+
+    const login = async (email: string, password: string) => {
     const data = await loginUser({ email, password });
     localStorage.setItem('vr_token', data.token);
     localStorage.setItem('vr_user', JSON.stringify({

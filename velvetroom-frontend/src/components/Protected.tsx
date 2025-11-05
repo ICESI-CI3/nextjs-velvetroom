@@ -11,7 +11,7 @@ export default function Protected({ children }: { children: React.ReactNode }) {
     if (!loading && !user) router.replace('/login');
   }, [user, loading, router]);
 
-  if (loading) return <p>Cargando…</p>;
+  if (loading) return <p>Cargando la habitación…</p>;
   if (!user) return null;
 
   return <>{children}</>;

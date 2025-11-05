@@ -5,10 +5,16 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import { getCurrentUser } from '@/services/auth';
 import AvatarBadge from '@/components/AvatarBadge';
+import { getCart } from '@/services/cart';
+import { useCart } from '@/contexts/CartContext';
 
 export default function Navbar() {
   const { user, logout, token, setUser } = useAuth();
   const [loadingUser, setLoadingUser] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+
+
+
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -28,6 +34,12 @@ export default function Navbar() {
     fetchUser();
   }, [token]);
 
+    useEffect(() => {
+    if (!user) return;
+    getCart().then((cart) => setCartCount(cart.items.length));
+    }, [user]);
+
+
   const renderLinks = () => {
     if (!user)
       return (
@@ -43,7 +55,8 @@ export default function Navbar() {
           <>
             <Link href="/admin/users" className="vr-btn">👥 Gestionar Usuarios</Link>
             <Link href="/categories" className="vr-btn">🏷 Gestionar Categorías</Link>
-            <Link href="/admin/products" className="vr-btn">📦 Gestionar productos</Link>
+            <Link href="/admin/products" className="vr-btn">📦 Gestionar Productos</Link>
+            <Link href="/admin/orders" className="vr-btn">💻 Gestionar Ordenes</Link>
             <Link href="/reports" className="vr-btn">📊 Ver Reportes</Link>
           </>
         );
@@ -59,7 +72,6 @@ export default function Navbar() {
           <>
             <Link href="/products" className="vr-btn">🛍 Productos</Link>
             <Link href="/orders" className="vr-btn">🧾 Mis pedidos</Link>
-            <Link href="/payments" className="vr-btn">💳 Pagos</Link>
           </>
         );
     }
@@ -86,6 +98,35 @@ export default function Navbar() {
 
       {user && !loadingUser && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <Link
+        href="/cart"
+        style={{
+            position: 'relative',
+            textDecoration: 'none'
+        }}
+        className="vr-btn"
+        >
+        🛒
+        {cartCount > 0 && (
+            <span
+            style={{
+                position: 'absolute',
+                top: -6,
+                right: -6,
+                background: 'var(--vr-gold)',
+                color: '#111',
+                padding: '2px 6px',
+                borderRadius: '50%',
+                fontSize: 12,
+                fontWeight: 700,
+                boxShadow: '0 0 10px rgba(212,175,55,0.7)',
+            }}
+            >
+            {cartCount}
+            </span>
+        )}
+        </Link>
+
           <AvatarBadge
             name={user.name}
             avatarUrl={user.avatarUrl}

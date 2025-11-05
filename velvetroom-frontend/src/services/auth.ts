@@ -19,3 +19,19 @@ export async function getCurrentUser() {
   const { data } = await api.get('/users/me');
   return data;
 }
+
+export function logoutUser() {
+  localStorage.removeItem("vr_token");
+  localStorage.removeItem("vr_user");
+  window.dispatchEvent(new Event("storage")); // 💡 notifica contexts
+}
+
+export function softLogout() {
+  localStorage.removeItem('vr_token');
+  localStorage.removeItem('vr_user');
+
+  window.dispatchEvent(new Event('auth-logout'));
+
+  // ✅ Redirigir con pantalla especial
+  window.location.href = '/unauthorized?type=logout';
+}

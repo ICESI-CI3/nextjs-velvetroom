@@ -5,6 +5,10 @@ import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { addToCart } from '@/services/cart';
+import { useAuth } from "@/contexts/AuthContext";
+import AddCartButton from '@/components/AddCartButton';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -71,9 +75,7 @@ export default function ProductDetailPage() {
           <p>Stock disponible: {product.stock}</p>
           <p>Categoría: {product.category?.name || 'Sin categoría'}</p>
           <p>Vendedor: {product.seller?.name || 'Desconocido'}</p>
-          <button className="vr-btn" style={{ marginTop: 20 }}>
-            Añadir al carrito
-          </button>
+          <AddCartButton productId={product.id} />
         </div>
       </div>
     </motion.div>
